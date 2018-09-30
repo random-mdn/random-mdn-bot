@@ -18,6 +18,8 @@ $ npm install
 
 The project uses [the Serverless Framework](https://serverless.com/) and currently provides one endpoint running in AWS. This endpoint does nothing else than responding with some JSON using a random npm package (`randomstring`).
 
+Currently this function is set up in AWS to act as HTTP endpoint when we have the basic functionality ready (fetching and parsing the MDN sitemap and sending a tweet) it will be change to run once a day without being available via HTTP.
+
 ## Local development
 
 To exectue the function that powers the endpoint you can run `npm run dev` inside of the project and it should execute the function locally.

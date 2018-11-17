@@ -38,4 +38,8 @@ To deploy and update the function `npm run deploy` does the job. To do so you ha
 
 ## Roadmap
 
-If you would like to help :heart: that would be awesome! You can find ideas and the current planning in #1.
+If you would like to help :heart: that would be awesome! You can find ideas and the current planning in [the planning issue](https://github.com/random-mdn/random-mdn-serverless/issues/1).
+
+## Code of conduct
+
+This project follows and enforece a [Code of Conduct](./CODE-OF-CONDUCT.md) to make everybody feel welcomed and safe.

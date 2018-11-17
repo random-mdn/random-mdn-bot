@@ -2,10 +2,9 @@
   "name": "random-mdn-serverless",
   "version": "1.0.0",
   "description": "Serverless functions tweeting/sending/... random MDN articles",
-  "main": "handler.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "serverless invoke local --function hello",
+    "dev": "serverless invoke local --function tweet",
     "deploy": "serverless deploy"
   },
   "repository": {
@@ -20,7 +19,9 @@
   },
   "homepage": "https://github.com/random-mdn/random-mdn-serverless#readme",
   "dependencies": {
-    "randomstring": "^1.1.5",
-    "serverless": "^1.32.0"
+    "got": "^9.3.2",
+    "serverless": "^1.33.1",
+    "striptags": "^3.1.1",
+    "twit": "^2.2.11"
   }
 }

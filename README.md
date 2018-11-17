@@ -16,9 +16,11 @@ $ npm install
 
 ## Structure
 
-The project uses [the Serverless Framework](https://serverless.com/) and currently provides one endpoint running in AWS. This endpoint does nothing else than responding with some JSON using a random npm package (`randomstring`).
+The project uses [the Serverless Framework](https://serverless.com/) and currently includes one function to run every six hours.
 
-Currently this function is set up in AWS to act as HTTP endpoint when we have the basic functionality ready (fetching and parsing the MDN sitemap and sending a tweet) it will be change to run once a day without being available via HTTP.
+### `tweet` – scheduled function (every 6 hours)
+
+The tweet function reads out the MDN sitemap, parses it and tweets the found article.
 
 ## Local development
 
@@ -28,17 +30,12 @@ It should look as follows:
 
 ```
 $ npm run dev
-
-> random-mdn-serverless@1.0.0 dev /Users/stefanjudis/Projects/random-mdn-serverless
-> serverless invoke local --function hello
-
-Serverless: INVOKING INVOKE
-{
-    "statusCode": 200,
-    "body": "{\"message\":\"Whoop whoop! Random mdn! Random: IeqRoYw7Z6hInkIqcC7hyN4Hm5pBX2qM\",\"input\":\"\"}"
-}
 ```
 
 ## Deployment
 
 To deploy and update the function `npm run deploy` does the job. To do so you have to have the proper rights and @stefanjudis can provide these when needed.
+
+## Roadmap
+
+If you would like to help :heart: that would be awesome! You can find ideas and the current planning in #1.

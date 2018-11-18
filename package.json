@@ -19,9 +19,9 @@
   },
   "homepage": "https://github.com/random-mdn/random-mdn-serverless#readme",
   "dependencies": {
+    "decode-html": "^2.0.0",
     "got": "^9.3.2",
     "serverless": "^1.33.1",
-    "striptags": "^3.1.1",
     "twit": "^2.2.11"
   }
 }

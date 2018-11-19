@@ -106,7 +106,8 @@ const getHashtags = url => {
     'Accessibility',
     'JavaScript',
     'HTTP',
-    'HTML'
+    'HTML',
+    'SVG'
   ];
 
   if (hashtagWorthySections.includes(section)) {

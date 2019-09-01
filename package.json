@@ -20,8 +20,9 @@
   "homepage": "https://github.com/random-mdn/random-mdn-serverless#readme",
   "dependencies": {
     "decode-html": "^2.0.0",
-    "got": "^9.3.2",
-    "serverless": "^1.33.1",
+    "got": "^9.6.0",
+    "html-entities": "^1.2.1",
+    "serverless": "^1.51.0",
     "twit": "^2.2.11"
   }
 }

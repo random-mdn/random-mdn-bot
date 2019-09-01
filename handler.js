@@ -10,6 +10,8 @@ const { promisify } = require('util');
  */
 const got = require('got');
 const Twit = require('twit');
+const Entities = require('html-entities').AllHtmlEntities;
+const entities = new Entities();
 
 /**
  * Environment handling
@@ -87,7 +89,7 @@ const getDescription = async url => {
     description = description.slice(0, 200) + '…';
   }
 
-  return description;
+  return entities.decode(description);
 };
 
 /**

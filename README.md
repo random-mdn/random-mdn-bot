@@ -24,7 +24,7 @@ The tweet function reads out the MDN sitemap, parses it and tweets the found art
 
 ## Local development
 
-To exectue the function that powers the endpoint you can run `npm run dev` inside of the project and it should execute the function locally.
+To run the function that powers the endpoint you can run `npm run dev` inside of the project and it should execute the function locally.
 
 It should look as follows:
 

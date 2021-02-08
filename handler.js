@@ -11,6 +11,7 @@ const { promisify } = require('util');
 const got = require('got');
 const Twit = require('twit');
 const Entities = require('html-entities').AllHtmlEntities;
+const { ungzip } = require('node-gzip');
 const entities = new Entities();
 
 /**
@@ -21,7 +22,7 @@ const {
   CONSUMER_SECRET: consumer_secret,
   ACCESS_TOKEN: access_token,
   ACCESS_TOKEN_SECRET: access_token_secret,
-  NODE_ENV
+  NODE_ENV,
 } = process.env;
 
 const IS_PRODUCTION = NODE_ENV === 'production';
@@ -29,7 +30,8 @@ const IS_PRODUCTION = NODE_ENV === 'production';
 /**
  * Sitemap Handling
  */
-const SITEMAP_URL = 'https://developer.mozilla.org/sitemaps/en-US/sitemap.xml';
+const SITEMAP_URL =
+  'https://developer.mozilla.org/sitemaps/en-US/sitemap.xml.gz';
 const WEB_PATH = 'https://developer.mozilla.org/en-US/docs/Web';
 
 /**
@@ -39,7 +41,7 @@ const twitter = new Twit({
   consumer_key,
   consumer_secret,
   access_token,
-  access_token_secret
+  access_token_secret,
 });
 
 const tweet = promisify(twitter.post.bind(twitter));
@@ -47,7 +49,7 @@ const tweet = promisify(twitter.post.bind(twitter));
 /**
  * Utilities
  */
-const onlyAllowWebUrls = url => url.startsWith(WEB_PATH);
+const onlyAllowWebUrls = (url) => url.startsWith(WEB_PATH);
 
 /**
  * Get URL to tweet
@@ -59,7 +61,10 @@ const onlyAllowWebUrls = url => url.startsWith(WEB_PATH);
  */
 const getUrlToTweet = async () => {
   const SITEMAP_URL_REGEX = /<loc>(.*?)<\/loc>/g;
-  const { body: sitemap } = await got(SITEMAP_URL);
+  const { body } = await got(SITEMAP_URL, {
+    responseType: 'buffer',
+  });
+  const sitemap = (await ungzip(body)).toString();
   const allDocUrls = [];
 
   let match;
@@ -79,7 +84,7 @@ const getUrlToTweet = async () => {
  * @param {String} url
  * @returns {Promise} description for the documented URL
  */
-const getDescription = async url => {
+const getDescription = async (url) => {
   const DESCRIPTION_REGEX = /<meta name="description" content="(.*?)">/;
   const { body: doc } = await got(url);
 
@@ -99,7 +104,7 @@ const getDescription = async url => {
  * @param {String} url
  * @returns {Array} fitting hashtags for the URL
  */
-const getHashtags = url => {
+const getHashtags = (url) => {
   const hashtags = ['#webdev'];
   const SECTION_REGEX = /Web\/(.*?)\//;
   const [, section] = url.match(SECTION_REGEX);
@@ -109,7 +114,7 @@ const getHashtags = url => {
     'JavaScript',
     'HTTP',
     'HTML',
-    'SVG'
+    'SVG',
   ];
 
   if (hashtagWorthySections.includes(section)) {
@@ -124,7 +129,7 @@ const getHashtags = url => {
  * @param {String} url
  * @returns {Promise}
  */
-const sendTweet = async url => {
+const sendTweet = async (url) => {
   const description = await getDescription(url);
   const hashtags = getHashtags(url);
   const status = `🦖 Random MDN 🦖\n\n${description} ${hashtags.join(

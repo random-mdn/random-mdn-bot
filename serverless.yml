@@ -2,13 +2,13 @@ service: random-mdn # NOTE: update this with your service name
 
 provider:
   name: aws
-  runtime: nodejs8.10
+  runtime: nodejs14.x
 
 functions:
   tweet:
     handler: handler.tweet
     events:
-      - schedule: rate(6 hours)
+      - schedule: rate(4 hours)
     environment:
       CONSUMER_KEY: ${env:CONSUMER_KEY}
       CONSUMER_SECRET: ${env:CONSUMER_SECRET}

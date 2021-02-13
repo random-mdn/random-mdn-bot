@@ -87,8 +87,13 @@ const getUrlToTweet = async () => {
 const getDescription = async (url) => {
   const DESCRIPTION_REGEX = /<meta name="description" content="(.*?)">/;
   const { body: doc } = await got(url);
+  const match = doc.match(DESCRIPTION_REGEX);
 
-  let [, description] = doc.match(DESCRIPTION_REGEX);
+  if (!match) {
+    return null;
+  }
+
+  let [, description] = match;
 
   if (description.length > 200) {
     description = description.slice(0, 200) + '…';
@@ -129,8 +134,7 @@ const getHashtags = (url) => {
  * @param {String} url
  * @returns {Promise}
  */
-const sendTweet = async (url) => {
-  const description = await getDescription(url);
+const sendTweet = async ({ url, description }) => {
   const hashtags = getHashtags(url);
   const status = `🦖 Random MDN 🦖\n\n${description} ${hashtags.join(
     ' '
@@ -147,8 +151,16 @@ const sendTweet = async (url) => {
 
 module.exports.tweet = async () => {
   try {
-    const urlToTweet = await getUrlToTweet();
-    await sendTweet(urlToTweet);
+    let urlToTweet;
+    let description;
+
+    // loop over it because many pages don't include a description
+    while (!description) {
+      urlToTweet = await getUrlToTweet();
+      description = await getDescription(urlToTweet);
+    }
+
+    await sendTweet({ url: urlToTweet, description });
   } catch (e) {
     console.error(e);
   }

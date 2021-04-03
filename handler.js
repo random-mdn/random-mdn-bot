@@ -79,13 +79,13 @@ const getUrlToTweet = async () => {
 };
 
 /**
- * Read out meta description and h1 for URL
- * We use the H1 rather than the <title> as the title is a little more verbose
+ * Read out <h1> and meta description for URL
+ * We use the <h1> rather than the <title> as the title is a little more verbose
  *
  * @param {String} url
- * @returns {Promise} description for the documented URL
+ * @returns {Promise} Array of h1 and description for the documented URL
  */
-const getDescriptionAndTitle = async (url) => {
+const getTitleAndDescription = async (url) => {
   const DESCRIPTION_REGEX = /<meta name="description" content="(.*?)">/i;
   const TITLE_REGEX = /<h1>(.*?)<\/h1>/i;
   const { body: doc } = await got(url);
@@ -163,7 +163,7 @@ const sendTweet = async ({ url, title, description }) => {
   } else {
     console.log('Running in dev mode. Following tweet would be sent');
     // Calculate length after converting the URL to fixed 23 length:
-    let length = status.length - url.length + 23;
+    const length = status.length - url.length + 23;
     console.log(`Tweet length: ${length}`);
     console.log(status);
   }
@@ -178,7 +178,7 @@ module.exports.tweet = async () => {
     // loop over it because many pages don't include a description
     while (!title || !description) {
       urlToTweet = await getUrlToTweet();
-      [title, description] = await getDescriptionAndTitle(urlToTweet);
+      [title, description] = await getTitleAndDescription(urlToTweet);
     }
 
     await sendTweet({ url: urlToTweet, title, description });

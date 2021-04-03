@@ -79,27 +79,38 @@ const getUrlToTweet = async () => {
 };
 
 /**
- * Read out meta description for URL
+ * Read out <h1> and meta description for URL
+ * We use the <h1> rather than the <title> as the title is a little more verbose
  *
  * @param {String} url
- * @returns {Promise} description for the documented URL
+ * @returns {Promise} Array of h1 and description for the documented URL
  */
-const getDescription = async (url) => {
-  const DESCRIPTION_REGEX = /<meta name="description" content="(.*?)">/;
+const getTitleAndDescription = async (url) => {
+  const DESCRIPTION_REGEX = /<meta name="description" content="(.*?)">/i;
+  const TITLE_REGEX = /<h1>(.*?)<\/h1>/i;
   const { body: doc } = await got(url);
-  const match = doc.match(DESCRIPTION_REGEX);
+
+  let match = doc.match(TITLE_REGEX);
 
   if (!match) {
-    return null;
+    return [null, null];
+  }
+
+  let [, title] = match;
+
+  if (title.length > 40) {
+    title = title.slice(0, 40) + '…';
+  }
+
+  match = doc.match(DESCRIPTION_REGEX);
+
+  if (!match) {
+    return [null, null];
   }
 
   let [, description] = match;
 
-  if (description.length > 200) {
-    description = description.slice(0, 200) + '…';
-  }
-
-  return entities.decode(description);
+  return [entities.decode(title), entities.decode(description)];
 };
 
 /**
@@ -134,17 +145,26 @@ const getHashtags = (url) => {
  * @param {String} url
  * @returns {Promise}
  */
-const sendTweet = async ({ url, description }) => {
-  const hashtags = getHashtags(url);
-  const status = `🦖 Random MDN 🦖\n\n${description} ${hashtags.join(
-    ' '
-  )}\n${url}`;
+const sendTweet = async ({ url, title, description }) => {
+  const hashtags = getHashtags(url).join(' ');
+
+  // Tweets can be 280 characters.
+  // Emojis take 2 characters so "🦖 Random MDN:  🦖" is 18 charcters, and urls take 23 characters
+  // So with new lines, we need 47 chars + title + hashtaghs. Let's leave space for 60 to be sure
+  let maxDescriptionLength = 280 - title.length - hashtags.length - 60;
+  if (description.length > maxDescriptionLength) {
+    description = description.slice(0, maxDescriptionLength) + '…';
+  }
+
+  const status = `🦖 Random MDN: ${title} 🦖\n\n${url}\n\n${description}\n\n${hashtags}`;
 
   if (IS_PRODUCTION) {
     await tweet('statuses/update', { status });
   } else {
     console.log('Running in dev mode. Following tweet would be sent');
-    console.log(`Tweet length: ${status.length}`);
+    // Calculate length after converting the URL to fixed 23 length:
+    const length = status.length - url.length + 23;
+    console.log(`Tweet length: ${length}`);
     console.log(status);
   }
 };
@@ -153,14 +173,15 @@ module.exports.tweet = async () => {
   try {
     let urlToTweet;
     let description;
+    let title;
 
     // loop over it because many pages don't include a description
-    while (!description) {
+    while (!title || !description) {
       urlToTweet = await getUrlToTweet();
-      description = await getDescription(urlToTweet);
+      [title, description] = await getTitleAndDescription(urlToTweet);
     }
 
-    await sendTweet({ url: urlToTweet, description });
+    await sendTweet({ url: urlToTweet, title, description });
   } catch (e) {
     console.error(e);
   }

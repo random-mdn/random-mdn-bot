@@ -52,14 +52,14 @@ const tweet = promisify(twitter.post.bind(twitter));
 const onlyAllowWebUrls = (url) => url.startsWith(WEB_PATH);
 
 /**
- * Get URL to tweet
+ * Get all MDN Web Documentation URLs
  *   - fetch MDN sitemap
- *   - parse it
- *   - grab a random URL
+ *   - unzip response
+ *   - filter out non-web-documentation URLs
  *
  * @returns {Promise} A random URL from the MDN sitemap
  */
-const getUrlToTweet = async () => {
+const getWebDocUrls = async () => {
   const SITEMAP_URL_REGEX = /<loc>(.*?)<\/loc>/g;
   const { body } = await got(SITEMAP_URL, {
     responseType: 'buffer',
@@ -73,9 +73,8 @@ const getUrlToTweet = async () => {
   }
 
   const webDocUrls = allDocUrls.filter(onlyAllowWebUrls);
-  const urlToTweet = webDocUrls[Math.floor(webDocUrls.length * Math.random())];
 
-  return urlToTweet;
+  return webDocUrls;
 };
 
 /**
@@ -175,9 +174,12 @@ module.exports.tweet = async () => {
     let description;
     let title;
 
+    const webDocUrls = await getWebDocUrls();
+
     // loop over it because many pages don't include a description
     while (!title || !description) {
-      urlToTweet = await getUrlToTweet();
+      // grab a random URL
+      urlToTweet = webDocUrls[Math.floor(webDocUrls.length * Math.random())];
       [title, description] = await getTitleAndDescription(urlToTweet);
     }
 

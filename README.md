@@ -18,7 +18,7 @@ $ npm install
 
 The project uses [the Serverless Framework](https://serverless.com/) and currently includes one function to run every six hours.
 
-### `tweet` – scheduled function (every 6 hours)
+### `tweet` – scheduled function (every 4 hours)
 
 The tweet function reads out the MDN sitemap, parses it and tweets the found article.
 

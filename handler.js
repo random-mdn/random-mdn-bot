@@ -85,7 +85,7 @@ const getWebDocUrls = async () => {
  * @returns {Promise} Array of h1 and description for the documented URL
  */
 export const getTitleAndDescription = async (url) => {
-  const DESCRIPTION_REGEX = /<meta name="description" content="(.*?)">/i;
+  const DESCRIPTION_REGEX = /<meta name="description" content="(.*?)"\/>/i;
   const TITLE_REGEX = /<h1>(.*?)<\/h1>/i;
   // to not rely on exact words this matches the deprecation container
   const DEPRECATION_REGEX = /class="notecard deprecated"/;

@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { getTitleAndDescription } from './handler';
+import { getTitleAndDescription } from './helpers';
 
 test('getTitleAndDescription', async () => {
   await expect(

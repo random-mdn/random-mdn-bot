@@ -25,7 +25,7 @@
     "got": "^11.8.1",
     "html-entities": "^1.2.1",
     "node-gzip": "^1.1.2",
-    "serverless": "^2.23.0",
+    "serverless": "^2.72.3",
     "twit": "^2.2.11"
   },
   "devDependencies": {

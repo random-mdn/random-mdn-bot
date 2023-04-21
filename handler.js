@@ -10,7 +10,6 @@ const { promisify } = require('util');
  */
 const got = require('got');
 const Twit = require('twit');
-const { ungzip } = require('node-gzip');
 const { getTitleAndDescription } = require('./helpers');
 
 /**
@@ -30,7 +29,7 @@ const IS_PRODUCTION = NODE_ENV === 'production';
  * Sitemap Handling
  */
 const SITEMAP_URL =
-  'https://developer.mozilla.org/sitemaps/en-US/sitemap.xml.gz';
+  'https://developer.mozilla.org/sitemaps/en-us/sitemap.xml.gz';
 const WEB_PATH = 'https://developer.mozilla.org/en-US/docs/Web';
 
 /**
@@ -62,8 +61,12 @@ const getWebDocUrls = async () => {
   const SITEMAP_URL_REGEX = /<loc>(.*?)<\/loc>/g;
   const { body } = await got(SITEMAP_URL, {
     responseType: 'buffer',
+    headers: {
+      'accept-encoding': 'gzip',
+    },
   });
-  const sitemap = (await ungzip(body)).toString();
+
+  const sitemap = body.toString();
   const allDocUrls = [];
 
   let match;

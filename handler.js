@@ -108,7 +108,7 @@ const getHashtags = (url) => {
 
 /**
  *
- * @param {String} url
+ * @param {Object} url
  * @returns {Promise}
  */
 const sendTweet = async ({ url, title, description }) => {

@@ -1,30 +1,31 @@
-# random-mdn-serverless
+# random-mdn-bot
 
-Serverless functions tweeting/sending/... random MDN articles
+A bot that posts random MDN articles
 
 ## Setup
 
 ```
 # clone the repo and get the source code
-$ git clone git@github.com:random-mdn/random-mdn-serverless.git
+$ git clone git@github.com:random-mdn/random-mdn-bot.git
 
 # install dependencies
 $ npm install
+
+# setup env
+$ cp .env.example .env
 
 # that's it. :)
 ```
 
 ## Structure
 
-The project uses [the Serverless Framework](https://serverless.com/) and currently includes one function to run every six hours.
+The project uses [GitHub Actions](https://docs.github.com/actions) to run a [Node.js](https://nodejs.org/) function every six hours.
 
-### `tweet` – scheduled function (every 4 hours)
-
-The tweet function reads out the MDN sitemap, parses it and tweets the found article.
+The function reads out the MDN sitemap, parses it and posts the found article to [Bluesky](https://bsky.app/profile/random-mdn.bsky.social).
 
 ## Local development
 
-To run the function that powers the endpoint you can run `npm run dev` inside of the project and it should execute the function locally.
+To run the function you can run `npm run dev` inside of the project and it should execute the function locally.
 
 It should look as follows:
 
@@ -32,9 +33,15 @@ It should look as follows:
 $ npm run dev
 ```
 
-## Deployment
+## CLI options
 
-To deploy and update the function `npm run deploy` does the job. To do so you have to have the proper rights and @stefanjudis can provide these when needed.
+#### Dry run
+
+```shell
+
+# Run the function without posting the article
+npm run dev -- --dry-run
+```
 
 ## Roadmap
 

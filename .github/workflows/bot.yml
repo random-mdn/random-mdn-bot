@@ -1,0 +1,41 @@
+name: Random MDN Bot
+
+on:
+  schedule:
+    # Run every 6 hours.
+    - cron: '0 */6 * * *'
+  workflow_dispatch: # This allows manually running the workflow from the GitHub actions page
+    inputs:
+      dryRun:
+        description: "Dry run"
+        type: boolean
+
+concurrency:
+  group: random-mdn-bot
+
+jobs:
+  post-mdn-article:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Setup node
+        uses: actions/setup-node@v4.4.0
+        with:
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Post article
+        run: |
+          if ${{ inputs.dryRun }}; then
+            npm start -- --dry-run
+          else
+            npm start
+          fi
+        env:
+          BSKY_SERVICE: https://bsky.social
+          BSKY_HANDLE: ${{ vars.BSKY_HANDLE }}
+          BSKY_PASSWORD: ${{ secrets.BSKY_PASSWORD }}

@@ -30,7 +30,7 @@ jobs:
       
       - name: Post article
         run: |
-          if [ "${{ inputs.dryRun }}" = true ]; then
+          if [ "${{ inputs.dryRun }}" = "true" ]; then
             npm start -- --dry-run
           else
             npm start

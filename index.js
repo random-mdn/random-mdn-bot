@@ -23,6 +23,16 @@ await run();
 async function run() {
   try {
     const article = await getRandomArticle();
+
+    // Bluesky posts can be 300 characters.
+    // Emojis take 2 characters so "🦖 Random MDN:  🦖" is 18 charcters, and urls take 37 characters
+    // So with new lines (6), we need 61 chars + title + hashtags. Let's leave space for 70 to be sure.
+    const maxDescriptionLength = 300 - article.title.length - article.hashtags.length - 70;
+    if (article.description.length > maxDescriptionLength) {
+      article.description = `${article.description.slice(0, maxDescriptionLength)}…`;
+    }
+
+    // Post the article to Bluesky
     const bskyBotRes = await BskyBot.run(article, bskyBotOptions);
     console.debug(`[${new Date().toISOString()}]:`, bskyBotRes);
   } catch (error) {

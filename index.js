@@ -27,7 +27,11 @@ async function run() {
     // Bluesky posts can be 300 characters.
     // Emojis take 2 characters so "🦖 Random MDN:  🦖" is 18 charcters, and urls take 37 characters
     // So with new lines (6), we need 61 chars + title + hashtags. Let's leave space for 70 to be sure.
-    const maxDescriptionLength = 300 - article.title.length - article.hashtags.length - 70;
+    let maxDescriptionLength = 300;
+    maxDescriptionLength -= 70;
+    maxDescriptionLength -= article.title.length;
+    maxDescriptionLength -= article.hashtags.join(' ').length;
+
     if (article.description.length > maxDescriptionLength) {
       article.description = `${article.description.slice(0, maxDescriptionLength)}…`;
     }

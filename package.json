@@ -30,7 +30,7 @@
   },
   "devDependencies": {
     "@vitest/ui": "3.2.4",
-    "vite": "7.0.5",
+    "vite": "7.0.6",
     "vitest": "3.2.4"
   }
 }

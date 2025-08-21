@@ -39,6 +39,7 @@ async function run() {
     const bskyBotRes = await BskyBot.run(article, bskyBotOptions);
     console.debug(`[${new Date().toISOString()}]:`, bskyBotRes);
   } catch (error) {
+    process.exitCode = 1; // Signify error exit code
     console.error(error);
   }
 }

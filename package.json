@@ -25,7 +25,7 @@
   "homepage": "https://github.com/random-mdn/random-mdn-bot#readme",
   "dependencies": {
     "@atproto/api": "0.16.9",
-    "@biomejs/biome": "2.2.4",
+    "@biomejs/biome": "2.3.7",
     "html-entities": "2.6.0"
   },
   "devDependencies": {

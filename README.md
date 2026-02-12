@@ -5,7 +5,7 @@
 [![Static Badge](https://img.shields.io/badge/Random-MDN-black?logo=bluesky)](https://bsky.app/profile/random-mdn.bsky.social)
 
 
-The project uses [GitHub Actions](https://docs.github.com/actions) to run a [Node.js](https://nodejs.org/) script every six hours. 
+The project uses [GitHub Actions](https://docs.github.com/actions) to run a [Node.js](https://nodejs.org/) script every eight hours. 
 
 The script reads out the [MDN](https://mdn.dev) sitemap, parses it and posts the found article to [Bluesky](https://bsky.app/profile/random-mdn.bsky.social).
 

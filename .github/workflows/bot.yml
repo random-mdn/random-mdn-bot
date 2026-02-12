@@ -2,8 +2,8 @@ name: Random MDN Bot
 
 on:
   schedule:
-    # Run every 6 hours.
-    - cron: '0 */6 * * *'
+    # Run every 8 hours
+    - cron: '0 */8 * * *'
   workflow_dispatch: # This allows manually running the workflow from the GitHub actions page
     inputs:
       dryRun:

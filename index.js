@@ -15,7 +15,7 @@ const { values: parsedArgs } = parseArgs({
 const bskyBotOptions = {
   dryRun: parsedArgs['dry-run'],
   postTemplateFn: (data) =>
-    `🦖 Random MDN: ${data.title} 🦖\n\n${data.url}\n\n${data.description}\n\n${data.hashtags?.join(' ')}`,
+    `🦖 ${data.title} 🦖\n\n${data.url}\n\n${data.description}\n\n${data.hashtags?.join(' ')}`,
 };
 
 await run();

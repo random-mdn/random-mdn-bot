@@ -29,7 +29,7 @@
     "html-entities": "2.6.0"
   },
   "devDependencies": {
-    "@vitest/ui": "4.1.9",
+    "@vitest/ui": "4.1.10",
     "vite": "8.1.4",
     "vitest": "4.1.9"
   }
